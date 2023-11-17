@@ -1,0 +1,154 @@
+# ***********************************************************************
+# Configuration File for the QTPD_DAQ 
+# ***********************************************************************
+
+# ***********************************************************************
+# Settings for the QTP (Analog QDC, TDC and Peak sensing ADC)
+# Supported Models
+# Q = QDC       : V792, V792N, V862, V965, V965A
+# T = TDC       : V775, V775N
+# P = Peak ADC  : V785, V785N, V1785
+# ***********************************************************************
+
+# ----------------------------------------------------------------
+# Base Address (32 hex number) of the QTP board (0 if not present)
+# ----------------------------------------------------------------
+QTP_BASE_ADDRESS    CC000000
+
+# ----------------------------------------------------------------
+# Iped (pedestal for the QDC or range for the TDC)
+# ----------------------------------------------------------------
+IPED 50
+
+# ----------------------------------------------------------------
+# Low Level Discriminator for the ADC (values below LLD will be discarded)
+# Syntax: QTP_LLD ch lld
+# ch = channel (0 to 31; -1 means all channels), lld = low level threshold in ADC channels (0 to 4095, granularity = 16)
+# ----------------------------------------------------------------
+QTP_LLD -1 256
+
+# ----------------------------------------------------------------
+# Kill the channel of QTP (32 bit hex number)
+# bit X = 1 means ch.X killed, bit X = 0 means ch.X alive
+# e.g. FFFF0000 means to kill ch.16 ~ ch.31 (0xFFFF0000 = 0b1111 1111 1111 1111 0000 0000 0000 0000) 
+# ----------------------------------------------------------------
+QTP_KILL_CHANNEL  00000000
+
+# ----------------------------------------------------------------
+# Enable Zero and Overflow suppression (zero suppression means ADC_VALUE < QTP_LLD)
+# ----------------------------------------------------------------
+ENABLE_SUPPRESSION  1
+
+# ----------------------------------------------------------------
+# Output Files
+# ----------------------------------------------------------------
+ENABLE_LIST_FILE        1   # List of events (event number + ADC values of the unsuppressed channels) in text format
+ENABLE_RAW_DATA_FILE    1   # Raw data (board memory dump); 32 bit words in binary format. 
+ENABLE_HISTO_FILES      1   # If enabled, the channel histograms (spectra) are saved every second during the run.
+                            # NOTE: histograms are also saved at the end of the run or when 'q' is pressed during the run.
+
+
+# ***********************************************************************
+# Settings for the Discriminator (CFD, LED)
+# Supported Models: V812, V814, V895
+# ***********************************************************************
+
+# ----------------------------------------------------------------
+# Base Address (32 hex number) of Discriminator (0 if not present)
+# ----------------------------------------------------------------
+DISCR1_BASE_ADDRESS   FF000000
+DISCR2_BASE_ADDRESS   EE000000
+
+# ----------------------------------------------------------------
+# Discr Thresholds
+# Syntax: DISCR_THRESHOLD ch thr
+# ch = channel (-1 means all channels), thr = threshold in mV
+# Discriminator1: 0 to 15; Discriminator2: 16 to 31 
+# ----------------------------------------------------------------
+DISCR_THRESHOLD -1 30	      # set all threshold = 5mV
+# DISCR_THRESHOLD 8 15
+# DISCR_THRESHOLD 9 30
+# DISCR_THRESHOLD  0 10      # set threshold = 5mV for ch0 only
+
+# ----------------------------------------------------------------
+# Discr Output Width (any number from 0 to 255)
+# 0   => about 11 ns
+# 105 => about 21 ns
+# 195 => about 51 ns
+# 225 => about 87 ns
+# 240 => about 130 ns
+# 255 => about 240 ns
+# ----------------------------------------------------------------
+DISCR_OUTPUT_WIDTH 255
+
+# ----------------------------------------------------------------
+# Discr Channel Enable Mask (16 bit hex number)
+# bit X = 1 means ch.X enabled, bit X = 0 means ch.X disabled
+# e.g. 000F means to enable ch.0 ~ ch.3 (0x000F = 0b0000 0000 0000 1111)
+# ****** NO LONGER NEEDED, IMPLEMENTED VIA QTP_KILL_CHANNEL ******
+# ----------------------------------------------------------------
+# DISCR1_CHANNEL_MASK FFFF
+# DISCR2_CHANNEL_MASK FFFF 
+
+
+# ***********************************************************************
+# Settings for the Logic Unit
+# Supported Models: V2495
+# ***********************************************************************
+
+# ----------------------------------------------------------------
+# Base Address (32 hex number) of Logic Unit (0 if not present)
+# ----------------------------------------------------------------
+PLU_BASE_ADDRESS  32100000
+
+# ----------------------------------------------------------------
+# Gate Width and Delay (Number of the clock cycle, T = 20 ns)
+# ----------------------------------------------------------------
+GATE_WIDTH  50
+GATE_DELAY  0
+
+# ----------------------------------------------------------------
+# Trigger Number (Number of scintillator that has been triggered, [min, max])
+# ----------------------------------------------------------------
+TRIGGER_NUMBER  1 16
+
+
+# ***********************************************************************
+# Settings for measurement
+# ***********************************************************************
+
+# ----------------------------------------------------------------
+# Set measurement period (in hours, > 0)
+# ----------------------------------------------------------------
+MEASUREMENT_PERIOD  1
+
+# ----------------------------------------------------------------
+# Set Measurement Cycles (number of measurement period, integer > 0)
+# ----------------------------------------------------------------
+MEASUREMENT_CYCLES  600
+
+
+# ************************************************************************
+# Parameters of Selection Criteria 
+# ************************************************************************
+
+# -----------------------------------------------------------------
+# Parameters of Prompt Signal (in MeV)
+# -----------------------------------------------------------------
+PROMPT_TOTAL    2     7
+PROMPT_1ST      1   6.5
+PROMPT_2ND      0  0.52
+
+# -----------------------------------------------------------------
+# Parameters of Delayed Signal (in MeV)
+# -----------------------------------------------------------------
+DELAYED_TOTAL    2  8
+DELAYED_1ST      1  7
+DELAYED_2ND      0  3
+DELAYED_3RD      0  2
+DELAYED_4TH      0  1
+
+# -----------------------------------------------------------------
+# Parameters of  Coincident Time Window (in us)
+# -----------------------------------------------------------------
+TIME_WINDOW  5 200
