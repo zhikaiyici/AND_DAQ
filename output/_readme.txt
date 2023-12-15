@@ -7,5 +7,5 @@ Chn24-31           0      0          0      0          0      0          0      
 
 Time格式
 EventNum 0
-CLKNum 215045411
+#CLKNum 215045411
 Timeus 4300908.22
